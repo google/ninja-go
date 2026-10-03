@@ -1,0 +1,29 @@
+name: "siso"
+description:
+    "Build status writer for the Soong/Android Ninja frontend protocol, "
+    "derived from Siso's toolsupport/soongutil package. The frontend.proto "
+    "definition comes from Android's Ninja fork."
+
+third_party {
+  identifier {
+    type: "Git"
+    value: "https://chromium.googlesource.com/build"
+    primary_source: true
+    version: "f7341d81b4314cffc87bc8a8ec5f3df9ce833bfc"
+  }
+  identifier {
+    type: "Git"
+    value: "https://android.googlesource.com/platform/external/ninja"
+    version: "75a0997a4be6439f824ef84834dbc9ab76ab34e5"
+  }
+  version: "f7341d81b4314cffc87bc8a8ec5f3df9ce833bfc"
+  last_upgrade_date { year: 2025 month: 9 day: 5 }
+  license_type: NOTICE
+  local_modifications:
+      "siso/toolsupport/soongutil/frontend.go and proto/doc.go were renamed "
+      "to package frontend/proto under third_party/siso/frontend, their "
+      "Siso-internal dependencies (build, clog, ui) were replaced with the "
+      "standard library, and verbosity/quiet options were added. "
+      "frontend.proto is copied from external/ninja src/frontend.proto with "
+      "go_package changed; frontend.pb.go is regenerated from it."
+}
