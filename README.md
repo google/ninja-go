@@ -1,9 +1,6 @@
 # ninja-go
 
-ninja-go is a reimplementation of the [Ninja](https://ninja-build.org/) build
-system in Go. It reads standard `build.ninja` files, including the extensions
-used by Android's Ninja fork (phony and symlink outputs, validations, the
-Soong frontend status protocol, and so on). The binary is called `ninjago`.
+Ninja-go was built as part of the [ABFS (Another Build File Service)](https://github.com/google/abfs) ecosystem. This repo alone is a golang reimplementation of the ninja build system (https://ninja-build.org/), which is used by Android.
 
 Parsing, graph construction, scheduling and execution all call into pluggable
 backends. Because of this, the same engine can run with different policies for
@@ -11,12 +8,12 @@ deciding when a step is up to date and how to run its command:
 
 *   The **classic** backend (`backends/classic`) works like upstream Ninja. It
     uses `.ninja_log` and `.ninja_deps` and runs every command locally.
-*   Another Build File Service (ABFS) has its own backend. It replaces
+*   [ABFS](https://github.com/google/abfs) has its own backend. It replaces
     timestamp checks with **content hashes**: for each step, it hashes the
     command, its inputs and the relevant environment, and looks the result up
     in a remote function cache. If there is a hit, ABFS materializes the cached
     outputs and skips the command. If there is a miss, ABFS runs the command,
-    traces the files it reads and writes, and records the result for next time.
+    traces the files it reads and writes, and records the result for next run.
 
 > [!NOTE]
 > This is not an officially supported Google product.
@@ -42,20 +39,6 @@ them all. They include the familiar `commands`, `inputs`, `path`, `query` and
 `graph`, plus ninja-go extras such as `dump`, `ninja_files` and `rule-query`.
 On Linux, the `--psi-cpu`, `--psi-io` and `--psi-mem` flags pause scheduling
 of new jobs when pressure stall information (PSI) exceeds the given threshold.
-
-## Package layout
-
-| Package | Purpose |
-| :--- | :--- |
-| `ninja` | Data model for the Ninja language: rules, builds, pools, scopes and variable expansion. |
-| `parse` | Parallel parser for Ninja files and depfiles. |
-| `graph` | Builds the dependency graph from parsed files. |
-| `build` | Scheduler and execution engine. |
-| `backends` | Backend interfaces and the `classic` implementation. |
-| `ninjafiles` | Readers and writers for `.ninja_log` and `.ninja_deps`. |
-| `subcommands` | The `-t` tools. |
-| `runtime` | Flags, logging, status line, and other shared runtime helpers. |
-| `third_party/siso/frontend` | Writer for the Soong frontend status protocol, derived from Siso. |
 
 ## Testing
 
