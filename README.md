@@ -15,9 +15,6 @@ deciding when a step is up to date and how to run its command:
     outputs and skips the command. If there is a miss, ABFS runs the command,
     traces the files it reads and writes, and records the result for next run.
 
-> [!NOTE]
-> This is not an officially supported Google product.
-
 ## Building
 
 You need Go 1.26 or later.
